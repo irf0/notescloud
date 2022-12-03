@@ -10,11 +10,15 @@ function Notes(props) {
   let navigate = useNavigate();
   const { notes, getAllNotes, editNote } = context;
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      getAllNotes();
-    } else {
-      navigate("/login");
+    if (localStorage.getItem("auth-token") == null) {
+      navigate("/signup");
     }
+    if (localStorage.getItem("auth-token")) {
+      getAllNotes();
+    }
+    // else {
+    //   navigate("login");
+    // }
   }, []);
 
   const ref = useRef(null); //Display set to none so modal btn will work hidden
@@ -161,7 +165,7 @@ function Notes(props) {
         {notes.map((note) => {
           return (
             <NoteItem
-              // updateNote={updateNote}
+              updateNote={updateNote}
               key={note._id}
               note={note}
               showAlert={props.showAlert}

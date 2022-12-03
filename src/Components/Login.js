@@ -21,8 +21,8 @@ function Login(props) {
     const json = await response.json();
     console.log(json);
     if (json.success) {
-      localStorage.setItem("token", json.authtoken); //->Saves the token in local storage and redirect
-      props.showAlert("Signup Successfull", "success");
+      localStorage.setItem("auth-token", json.authToken); //->Saves the token in local storage and redirect
+      props.showAlert("Login Successfull", "success");
       navigate("/");
     } else {
       props.showAlert("Invalid Credentials", "danger");
@@ -34,6 +34,9 @@ function Login(props) {
 
   return (
     <div>
+      <div className="mt-3">
+        <h2>Login to SecretsVault</h2>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">

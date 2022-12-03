@@ -27,11 +27,12 @@ function SignUp(props) {
     const json = await response.json();
     console.log(json);
     if (json.success) {
-      localStorage.setItem("token", json.authtoken); //->Saves the token in local storage and redirect
-      navigate("/");
+      localStorage.setItem("auth-token", json.authToken); //->Saves the token in local storage and redirect
+      navigate("/login");
       props.showAlert("Signup Successfull", "success");
     } else {
       props.showAlert("Invalid Credentials", "danger");
+      navigate("/login");
     }
   };
   const handleChange = (e) => {
@@ -40,6 +41,7 @@ function SignUp(props) {
 
   return (
     <div>
+      <h2>Create an account</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
