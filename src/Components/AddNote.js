@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import noteContext from "../context/notes/NoteContext";
 
-function AddNote() {
+function AddNote(props) {
   const context = useContext(noteContext);
   const { addNote } = context;
   const [note, setNote] = useState({ title: "", description: "", tag: "" });
@@ -9,6 +9,8 @@ function AddNote() {
   const handleClick = (e) => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
+    setNote({ id: "", title: "", description: "", tag: "" }); //Input fields become Blank after clicking the button 'Add Note'
+    props.showAlert("Noted Added!", "success");
   };
   const handleChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
@@ -23,6 +25,7 @@ function AddNote() {
             Title
           </label>
           <input
+            value={note.title}
             type="text"
             className="form-control"
             id="title"
@@ -36,6 +39,7 @@ function AddNote() {
             Tag
           </label>
           <input
+            value={note.tag}
             type="text"
             className="form-control"
             id="tag"
@@ -48,6 +52,7 @@ function AddNote() {
         <div className="form-group mb-3">
           <label htmlFor="description">Description</label>
           <textarea
+            value={note.description}
             className="form-control"
             id="description"
             name="description"
@@ -55,7 +60,12 @@ function AddNote() {
             rows="3"
           ></textarea>
         </div>
-        <button type="submit" className="btn btn-success" onClick={handleClick}>
+        <button
+          disabled={note.title.length < 5 || note.description.length < 5}
+          type="submit"
+          className="btn btn-success"
+          onClick={handleClick}
+        >
           Add Note
         </button>
       </form>

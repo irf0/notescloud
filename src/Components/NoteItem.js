@@ -4,7 +4,7 @@ import noteContext from "../context/notes/NoteContext";
 function NoteItem(props) {
   const context = useContext(noteContext);
   const { deleteNote } = context;
-  const { note } = props;
+  const { note, updateNote } = props;
   return (
     <div className="col-md-3">
       <div className="card my-3">
@@ -14,10 +14,16 @@ function NoteItem(props) {
           <i
             className="fa-solid fa-trash"
             onClick={() => {
-              deleteNote(note._id); //onClicking we call the function deleteNote with this id
+              deleteNote(note._id);
+              props.showAlert("Note deleted!", "danger"); //onClicking we call the function deleteNote with this id
             }}
           ></i>
-          <i className="fa-solid fa-pen-to-square mx-5"></i>
+          <i
+            className="fa-solid fa-pen-to-square mx-5"
+            onClick={() => {
+              updateNote(note);
+            }}
+          ></i>
         </div>
       </div>
     </div>

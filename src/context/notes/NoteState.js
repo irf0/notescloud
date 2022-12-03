@@ -13,8 +13,7 @@ const NoteState = (props) => {
       method: "GET",
       headers: {
         "Content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM4NWQ1ZDUyNTJjZWZkODRhNWY2ZjJjIn0sImlhdCI6MTY2OTcxNTQyNn0.MMH-p7jVeROYxbUpyjeO4ygaR9_BVCM9_DRUQmheb_Q",
+        "auth-token": localStorage.getItem("token"),
       },
     });
     const json = await response.json();
@@ -28,8 +27,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "Content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM4NWQ1ZDUyNTJjZWZkODRhNWY2ZjJjIn0sImlhdCI6MTY2OTcxNTQyNn0.MMH-p7jVeROYxbUpyjeO4ygaR9_BVCM9_DRUQmheb_Q",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -55,8 +53,7 @@ const NoteState = (props) => {
       method: "DELETE",
       headers: {
         "Content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM4NWQ1ZDUyNTJjZWZkODRhNWY2ZjJjIn0sImlhdCI6MTY2OTcxNTQyNn0.MMH-p7jVeROYxbUpyjeO4ygaR9_BVCM9_DRUQmheb_Q",
+        "auth-token": localStorage.getItem("token"),
       },
     });
     const json = response.json();
@@ -73,25 +70,27 @@ const NoteState = (props) => {
   const editNote = async (id, title, description, tag) => {
     //Api Call
     const response = await fetch(`${host}/api/notes/updatenotes/${id}`, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM4NWQ1ZDUyNTJjZWZkODRhNWY2ZjJjIn0sImlhdCI6MTY2OTcxNTQyNn0.MMH-p7jVeROYxbUpyjeO4ygaR9_BVCM9_DRUQmheb_Q",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });
     const json = response.json();
     console.log(json);
 
+    const newUpdatedNotes = JSON.parse(JSON.stringify(notes));
     for (let i = 0; i < notes.length; i++) {
       const editableNote = notes[i]; //Pulling notes from notes.map in Notes.js using context api.
       if (editableNote._id === id) {
-        editableNote.title = title;
-        editableNote.description = description;
-        editableNote.tag = tag;
+        newUpdatedNotes[i].title = title;
+        newUpdatedNotes[i].description = description;
+        newUpdatedNotes[i].tag = tag;
+        break;
       }
     }
+    setNotes(newUpdatedNotes);
   };
 
   return (
